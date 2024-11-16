@@ -6,10 +6,11 @@ public class SwitchBehavior : MonoBehaviour
 {
     //public GameObject door;
     public Color color;
+    public bool hasTimer;
+    public int timerDuration = 10;
 
     private GameObject switchObject;
 
-    // Start is called before the first frame update
     void Start()
     {
         // if(door == null) {
@@ -18,7 +19,15 @@ public class SwitchBehavior : MonoBehaviour
 
         switchObject = gameObject.transform.GetChild(1).gameObject;
         switchObject.GetComponent<Renderer>().material.color = color;
+
+        GameObject baseObject = gameObject.transform.GetChild(0).gameObject;
+        baseObject.GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 1);
     }
+
+    //ADD TIMER
+    
+    //if timer runs out ...
+    //switchObject.transform.Rotate(0, -90, 0);
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -26,6 +35,7 @@ public class SwitchBehavior : MonoBehaviour
             // check if same color
 
             // then SWITCH the SWITCH
+            switchObject.transform.Rotate(0, 90, 0);
 
             // and open the door
         }
