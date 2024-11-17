@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SwitchBehavior : MonoBehaviour
+public class SwitchBehavior : AMonoBoomerangHittable
 {
     [SerializeField] private UnityEvent<bool> OnPowerStateChanged;
 
     private Animator m_animator;
 
-    //public GameObject door;
     public Color color;
     public bool hasTimer;
     public int timerDuration = 10;
@@ -20,10 +19,6 @@ public class SwitchBehavior : MonoBehaviour
 
     void Start()
     {
-        // if(door == null) {
-        //     door = GameObject.FindGameObjectWithTag("Door");
-        // }
-
         switchObject = gameObject.transform.GetChild(1).gameObject;
         switchObject.GetComponent<Renderer>().material.color = color;
 
@@ -32,21 +27,33 @@ public class SwitchBehavior : MonoBehaviour
     }
 
     //ADD TIMER
-    
+
     //if timer runs out ...
     //switchObject.transform.Rotate(0, -90, 0);
 
-    private void OnCollisionEnter(Collision collision)
+    protected override void DoHitBehavior()
     {
-        if(collision.gameObject.CompareTag("Boomerang")){
-            // check if same color
+        SetState(!IsOn);
+    }
 
-            // then SWITCH the SWITCH
-            // switchObject.transform.Rotate(0, 90, 0);
-            IsOn = !IsOn;
-            m_animator.Play(IsOn ? "Switch|toggle_on" : "Switch|toggle_off");
+    private void SetState(bool state)
+    {
+        IsOn = state;
+        m_animator.Play(IsOn ? "Switch|toggle_on" : "Switch|toggle_off");
 
-            OnPowerStateChanged.Invoke(IsOn);
+        OnPowerStateChanged.Invoke(IsOn);
+
+        if (hasTimer && IsOn)
+        {
+            StopAllCoroutines();
+            StartCoroutine(IETimer());
         }
+    }
+
+    private IEnumerator IETimer()
+    {
+        yield return new WaitForSeconds(timerDuration);
+
+        SetState(false);
     }
 }
