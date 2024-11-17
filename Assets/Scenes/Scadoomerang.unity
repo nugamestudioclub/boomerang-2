@@ -1152,13 +1152,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533177259}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.067990676, y: -0, z: -0, w: 0.99768597}
+  m_LocalRotation: {x: 0.068417564, y: -0, z: -0, w: 0.9976568}
   m_LocalPosition: {x: 16.9, y: 10.6, z: -28.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 7.797, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.846, y: 0, z: 0}
 --- !u!1 &606914388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,8 +2182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4447020e9adc42768c6f1788edba75c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPos: {fileID: 533177259}
-  cursorPrefab: {fileID: 5870370374304322658, guid: 55b63d8818f8a4e40ad56ea97962bfb1, type: 3}
+  camera: {fileID: 533177259}
+  cursorPrefab: {fileID: 5984875508235496131, guid: 59f4cdba372114658bc592678113a572, type: 3}
   playerPos: {fileID: 1151659731}
   pointPrefab: {fileID: 7192326017959615652, guid: 2e16ad2342ee84225ad97c0a6a5973b7, type: 3}
 --- !u!1 &1291278666
