@@ -11,6 +11,8 @@ public class DrawModeBehavior : MonoBehaviour
     private Button drawButton; 
     private bool drawMode;
     private GameObject cursor;
+    private float totalDrawDistance;
+    private float moveDistance;
     
     void Start()
     {
@@ -37,6 +39,11 @@ public class DrawModeBehavior : MonoBehaviour
         drawModeTurnsOn();
     }
 
+    // UNCLICK FUNCTION ------------
+    // drawMode = false;
+    // move camera back to perspective
+    // totalDrawDistance = 0;
+
     private void drawModeTurnsOn() {
         Debug.Log("Draw mode turned on.");
         drawMode = true;
@@ -56,37 +63,51 @@ public class DrawModeBehavior : MonoBehaviour
 
         cursor = Instantiate(cursorPrefab, playerPos, transform.rotation) 
             as GameObject;
+        
 
     }
 
     void Update() {
         if(drawMode) {
             if(Input.GetButton("W")) {
+                totalDrawDistance += moveDistance;
                 // UP
                 // increase z
                 cursor.transform = new Vector3(cursor.transform.x, 
                     cursor.transform.y, cursor.transform.z);
+                
+                GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                    as GameObject;
             }
 
             if(Input.GetButton("S")) {
+                totalDrawDistance += moveDistance;
                 // DOWN
                 // decrease x
                 cursor.transform = new Vector3(cursor.transform.x, 
                     cursor.transform.y, cursor.transform.z);
+                GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                    as GameObject;
             }
 
             if(Input.GetButton("A")) {
+                totalDrawDistance += moveDistance;
                 // LEFT
                 // decrease x
                 cursor.transform = new Vector3(cursor.transform.x, 
                     cursor.transform.y, cursor.transform.z);
+                GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                    as GameObject;
             }
 
             if(Input.GetButton("D")) {
+                totalDrawDistance += moveDistance;
                 // RIGHT
                 // increase x
                 cursor.transform = new Vector3(cursor.transform.x, 
                     cursor.transform.y, cursor.transform.z);
+                GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                    as GameObject;
             }
         }
     }
