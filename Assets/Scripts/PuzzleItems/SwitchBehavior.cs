@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class SwitchBehavior : AMonoBoomerangHittable
 {
     [SerializeField] private UnityEvent<bool> OnPowerStateChanged;
+    [SerializeField] private bool m_defaultState = true;
 
     private Animator m_animator;
 
@@ -22,9 +23,17 @@ public class SwitchBehavior : AMonoBoomerangHittable
         switchObject = gameObject.transform.GetChild(1).gameObject;
         switchObject.GetComponent<Renderer>().material.color = color;
 
+        m_animator = GetComponent<Animator>();
+
         GameObject baseObject = gameObject.transform.GetChild(0).gameObject;
         baseObject.GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 1);
+
+        SetState(m_defaultState);
+
+        Invoke(nameof(foo), 8f);
     }
+
+    void foo() => SetState(!IsOn);
 
     //ADD TIMER
 

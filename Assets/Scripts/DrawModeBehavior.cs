@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DrawModeBehavior : MonoBehaviour
 {
+    /*
     public GameObject cameraPos;
     public GameObject cursorPrefab;
     public transform playerPos;
@@ -111,4 +113,5 @@ public class DrawModeBehavior : MonoBehaviour
             }
         }
     }
+    */
 }

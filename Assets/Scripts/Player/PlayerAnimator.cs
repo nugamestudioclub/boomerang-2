@@ -44,7 +44,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void PlayFall(Vector3 offset)
     {
-        ForcePlay(Animations.Fall);
+        m_animator.Play("Armature|fall"); // force by string here bc using a state messes up things
         StartCoroutine(IELerpToFallPosition(transform.position + offset));
     }
 
