@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
 {
     [SerializeField] private string m_boomerangTag = "Boomerang";
     [SerializeField] private bool m_endsPathOnHit = false;
+    [SerializeField] private bool m_endsPathOnMiss = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,8 +17,17 @@ public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
         {
             // get boomerang component with a trygetcomponent and put it into the preprocess
 
+            DoHitBehavior();
+
+            return m_endsPathOnHit;
         }
-        return false;
+
+        return m_endsPathOnMiss;
+    }
+
+    protected virtual void DoHitBehavior()
+    {
+        // pass
     }
 
     // for checking colors and stuff
