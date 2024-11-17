@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class AMonoAnimatorToggle : MonoBehaviour
+public abstract class AMonoAnimatorToggle : MonoBehaviour, IStateChangeable
 {
     [SerializeField] private Animator m_animator;
     [SerializeField] private string m_stateEnabled;
