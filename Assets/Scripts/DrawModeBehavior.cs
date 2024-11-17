@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 public class DrawModeBehavior : MonoBehaviour
 {
-    public GameObject cameraPos;
     public GameObject cursorPrefab;
     public Transform playerPos;
     public GameObject pointPrefab;
@@ -21,10 +20,6 @@ public class DrawModeBehavior : MonoBehaviour
         root = GetComponent<UIDocument>();
         drawButton = root.rootVisualElement.Q("Draw") as Button;
         drawButton.RegisterCallback<ClickEvent>(onDraw);
-
-        if(cameraPos == null) {
-            cameraPos = GameObject.FindGameObjectWithTag("MainCamera");
-        }
 
         if(cursorPrefab == null) {
             cursorPrefab = GameObject.FindGameObjectWithTag("Cursor");
@@ -47,22 +42,18 @@ public class DrawModeBehavior : MonoBehaviour
     private void drawModeTurnsOn() {
         Debug.Log("Draw mode turned on.");
         drawMode = true;
-        Vector3 pos3DView = new Vector3(-10.1f, 5.8f, -74.8f);
-        Vector3 pos2DAboveView = new Vector3(-10.1f, 32, -7.7f);
+        Vector3 pos3DView = new Vector3(16.9f, 10.6f, -28.3f);
+        Vector3 pos2DAboveView = new Vector3(16.9f, 10.6f, 20.6f);
 
         //lerp to this position!!!
 
-        //3D to 2D
-        //cameraPos.transform.Rotate(90, 0, 0);
-        //Camera.main.orthographic = true;
-
-        //2D to 3D 
-        //cameraPos.transform.Rotate(-90, 0, 0);
-
         //cameraPos = new Vector3();
+        Camera.main.transform.position = pos2DAboveView;
+        Camera.main.transform.Rotate(83, 0, 0);
+        Camera.main.orthographic = true;
 
-        //cursor = Instantiate(cursorPrefab, playerPos, transform.rotation) 
-            //as GameObject;
+        GameObject cursor = Instantiate(cursorPrefab, playerPos.position, transform.rotation) 
+            as GameObject;
     }
 
     void Update() {
