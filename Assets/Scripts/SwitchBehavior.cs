@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SwitchBehavior : MonoBehaviour
 {
+    [SerializeField] private UnityEvent<bool> OnPowerStateChanged;
+
+    private Animator m_animator;
+
     //public GameObject door;
     public Color color;
     public bool hasTimer;
     public int timerDuration = 10;
+
+    public bool IsOn = false;
 
     private GameObject switchObject;
 
@@ -35,9 +42,11 @@ public class SwitchBehavior : MonoBehaviour
             // check if same color
 
             // then SWITCH the SWITCH
-            switchObject.transform.Rotate(0, 90, 0);
+            // switchObject.transform.Rotate(0, 90, 0);
+            IsOn = !IsOn;
+            m_animator.Play(IsOn ? "Switch|toggle_on" : "Switch|toggle_off");
 
-            // and open the door
+            OnPowerStateChanged.Invoke(IsOn);
         }
     }
 }

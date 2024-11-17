@@ -37,7 +37,7 @@ public class StartScreenManager : MonoBehaviour {
    
 
     private void OnStart(ClickEvent clickEvent){
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("Level1");
     }
 
     private void OnSettings(ClickEvent clickEvent){
