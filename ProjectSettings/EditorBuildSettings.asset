@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 9e2bc9e13b7624991a1f4f5360f932d9
+  - enabled: 1
+    path: Assets/Scenes/Scadoomerang.unity
+    guid: eabe1b6facd714718b411e61051179c2
   m_configObjects: {}
