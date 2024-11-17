@@ -56,7 +56,7 @@ public class PlayerAnimator : MonoBehaviour
         {
             progress += Time.deltaTime * 4f;
 
-            transform.position = Vector3.Lerp(transform.position, pos, progress);
+            transform.position = Vector3.Slerp(transform.position, pos, progress);
 
             yield return null;
         }

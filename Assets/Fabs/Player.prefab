@@ -1690,7 +1690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_controller: {fileID: 7567410988882858907}
-  m_moveSpeed: 12
+  m_moveSpeed: 14
   m_forwardLerp: 0.6
   m_sphereOffset: {x: 0, y: -1, z: 0}
   m_raydius: 1

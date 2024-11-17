@@ -29,16 +29,7 @@ public class SwitchBehavior : AMonoBoomerangHittable
         baseObject.GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 1);
 
         SetState(m_defaultState);
-
-        Invoke(nameof(foo), 8f);
     }
-
-    void foo() => SetState(!IsOn);
-
-    //ADD TIMER
-
-    //if timer runs out ...
-    //switchObject.transform.Rotate(0, -90, 0);
 
     protected override void DoHitBehavior()
     {
