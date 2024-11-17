@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private bool m_canMove = true;
     private bool m_canThrow = true;
+    private bool m_waitForStart = true;
 
     private Vector2 m_input;
 
@@ -18,7 +19,11 @@ public class PlayerController : MonoBehaviour
     {
         m_movement = GetComponent<PlayerMovement>();
         m_animator = GetComponent<PlayerAnimator>();
+
+        Invoke(nameof(FinishInit), 0.5f);
     }
+
+    private void FinishInit() => m_waitForStart = false;
 
     private void Update()
     {
@@ -36,7 +41,12 @@ public class PlayerController : MonoBehaviour
 
         m_animator.DoAnimation(m_input);
 
-        CheckForFall();
+        // removes the bug that occurs on some computers with the insta-fall state.
+        // delays the check until everything is set up and ready to go.
+        if (!m_waitForStart)
+        {
+            CheckForFall();
+        }
     }
 
     private void CheckForFall()
