@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Properties;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAnimator))]
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private bool m_canMove = true;
     private bool m_canThrow = true;
-    private bool m_waitForStart = true;
+    private bool m_doCheckForFall = false;
 
     private Vector2 m_input;
 
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
         Invoke(nameof(FinishInit), 0.5f);
     }
 
-    private void FinishInit() => m_waitForStart = false;
+    private void FinishInit() => m_doCheckForFall = true;
 
     private void Update()
     {
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
         // removes the bug that occurs on some computers with the insta-fall state.
         // delays the check until everything is set up and ready to go.
-        if (!m_waitForStart)
+        if (m_doCheckForFall)
         {
             CheckForFall();
         }
@@ -53,16 +54,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!m_movement.IsGrounded())
         {
+            m_doCheckForFall = false;
             m_canMove = false;
 
-            var offset = new Vector3(m_input.x * 2.5f, 0f, m_input.y * 2.5f);
+            var offset = new Vector3(m_input.x * 3.5f, 0f, m_input.y * 3.5f);
             m_animator.PlayFall(offset);
 
-            enabled = false;
+            Invoke(nameof(DelayInactive), 1f);
 
             // reload scene.
         }
     }
+
+    private void DelayInactive() => gameObject.SetActive(false);
 
     private Vector2 GetMoveInput()
     {
