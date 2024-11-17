@@ -12,7 +12,9 @@ public class DrawModeBehavior : MonoBehaviour
     private Button drawButton; 
     private bool drawMode;
     private float totalDrawDistance;
-    private float moveDistance;
+    public float moveDistance = 10f;
+    private List<GameObject> points = new List<GameObject>();
+    private Vector3 input, originalPos;
     
     void Start()
     {
@@ -52,55 +54,76 @@ public class DrawModeBehavior : MonoBehaviour
         Camera.main.transform.Rotate(83, 0, 0);
         Camera.main.orthographic = true;
 
-        GameObject cursor = Instantiate(cursorPrefab, playerPos.position, transform.rotation) 
+        Vector3 cursorPos = new Vector3(playerPos.position.x, playerPos.position.y + 5, playerPos.position.z);
+        GameObject cursor = Instantiate(cursorPrefab, cursorPos, transform.rotation) 
             as GameObject;
     }
 
     void Update() {
-        // if(drawMode) {
-        //     if(Input.GetButton("W")) {
-        //         totalDrawDistance += moveDistance;
-        //         // UP
-        //         // increase z
-        //         cursor.transform = new Vector3(cursor.transform.x, 
-        //             cursor.transform.y, cursor.transform.z + moveDistance);
+        if(drawMode) {
+            GameObject cursor = GameObject.FindGameObjectWithTag("Cursor");
+
+            float moveHorizontal = Input.GetAxisRaw("Horizontal");
+            float moveVertical = Input.GetAxisRaw("Vertical");
+            originalPos = cursor.transform.position;
+            //make it local to the cursor
+            //input = (cursor.transform.right * moveHorizontal + cursor.transform.forward * moveVertical).normalized;
+
+            // MOVE RIGHT
+            if(moveHorizontal > 0.5) {
+                cursor.transform.position = new Vector3(cursor.transform.position.x + moveDistance, 
+                cursor.transform.position.y, cursor.transform.position.z);
                 
-        //         GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
-        //             as GameObject;
-        //     }
+                if(originalPos.x + 0.1 < cursor.transform.position.x) { 
+                    GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                        as GameObject;
 
-        //     if(Input.GetButton("S")) {
-        //         totalDrawDistance += moveDistance;
-        //         // DOWN
-        //         // decrease z
-        //         Transform t = cursor.transform;
-        //         t.position = new Vector3(t.position.x, 
-        //             t.position.y, t.position.z - moveDistance);
-        //         GameObject spawnedPoint = Instantiate(pointPrefab, t.position, transform.rotation)
-        //             as GameObject;
-        //     }
+                    points.Add(spawnedPoint);
+                    originalPos = cursor.transform.position;
+                }
+            }
 
-        //     if(Input.GetButton("A")) {
-        //         totalDrawDistance += moveDistance;
-        //         // LEFT
-        //         // decrease x
-        //         Transform t = cursor.transform;
-        //         t.position = new Vector3(t.position.x - moveDistance, 
-        //             t.position.y, t.position.z);
-        //         GameObject spawnedPoint = Instantiate(pointPrefab, t.position, transform.rotation)
-        //             as GameObject;
-        //     }
+            // MOVE LEFT
+            if(moveHorizontal < -0.5) {
+                cursor.transform.position = new Vector3(cursor.transform.position.x - moveDistance, 
+                cursor.transform.position.y, cursor.transform.position.z);
+                
+                if(originalPos.x + 0.1 > cursor.transform.position.x) { 
+                    GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                        as GameObject;
 
-        //     if(Input.GetButton("D")) {
-        //         totalDrawDistance += moveDistance;
-        //         // RIGHT
-        //         // increase x
-        //         Transform t = cursor.transform;
-        //         t.position.transform = new Vector3(t.position.x + moveDistance, 
-        //             t.position.y, t.position.z);
-        //         GameObject spawnedPoint = Instantiate(pointPrefab, t.position.position, transform.rotation)
-        //             as GameObject;
-        //     }
-        // }
+                    points.Add(spawnedPoint);
+                    originalPos = cursor.transform.position;
+                }
+            }
+
+            // MOVE UP
+            if(moveVertical > 0.5) {
+                cursor.transform.position = new Vector3(cursor.transform.position.x, 
+                cursor.transform.position.y, cursor.transform.position.z + moveDistance);
+                
+                if(originalPos.z + 0.1 > cursor.transform.position.z) { 
+                    GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                        as GameObject;
+
+                    points.Add(spawnedPoint);
+                    originalPos = cursor.transform.position;
+                }
+            }
+
+            // MOVE DOWN
+            if(moveVertical < -0.5) {
+                cursor.transform.position = new Vector3(cursor.transform.position.x, 
+                cursor.transform.position.y, cursor.transform.position.z - moveDistance);
+                
+                if(originalPos.z + 0.1 < cursor.transform.position.z) { 
+                    GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
+                        as GameObject;
+
+                    points.Add(spawnedPoint);
+                    originalPos = cursor.transform.position;
+                }
+            }
+        }
     }
 }
