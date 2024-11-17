@@ -74,7 +74,7 @@ public class DrawModeBehavior : MonoBehaviour
                 // UP
                 // increase z
                 cursor.transform = new Vector3(cursor.transform.x, 
-                    cursor.transform.y, cursor.transform.z);
+                    cursor.transform.y, cursor.transform.z + moveDistance);
                 
                 GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
                     as GameObject;
@@ -83,9 +83,9 @@ public class DrawModeBehavior : MonoBehaviour
             if(Input.GetButton("S")) {
                 totalDrawDistance += moveDistance;
                 // DOWN
-                // decrease x
+                // decrease z
                 cursor.transform = new Vector3(cursor.transform.x, 
-                    cursor.transform.y, cursor.transform.z);
+                    cursor.transform.y, cursor.transform.z - moveDistance);
                 GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
                     as GameObject;
             }
@@ -94,7 +94,7 @@ public class DrawModeBehavior : MonoBehaviour
                 totalDrawDistance += moveDistance;
                 // LEFT
                 // decrease x
-                cursor.transform = new Vector3(cursor.transform.x, 
+                cursor.transform = new Vector3(cursor.transform.x - moveDistance, 
                     cursor.transform.y, cursor.transform.z);
                 GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
                     as GameObject;
@@ -104,7 +104,7 @@ public class DrawModeBehavior : MonoBehaviour
                 totalDrawDistance += moveDistance;
                 // RIGHT
                 // increase x
-                cursor.transform = new Vector3(cursor.transform.x, 
+                cursor.transform = new Vector3(cursor.transform.x + moveDistance, 
                     cursor.transform.y, cursor.transform.z);
                 GameObject spawnedPoint = Instantiate(pointPrefab, cursor.transform.position, transform.rotation)
                     as GameObject;
