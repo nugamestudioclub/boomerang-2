@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private DrawModeBehavior m_drawModeController;
+    [SerializeField] private BoomerangController m_boomerangReference;
+
     private PlayerMovement m_movement;
     private PlayerAnimator m_animator;
-    private BoomerangController m_boomerangController;
 
     private bool m_canMove = true;
     private bool m_canThrow = true;
@@ -30,17 +33,33 @@ public class PlayerController : MonoBehaviour
     {
         m_input = GetMoveInput();
 
-        if (m_canThrow && Input.GetAxis("Jump") > 0)
+        if (m_canThrow && Input.GetButtonDown("Jump"))
         {
-
+            ToggleBoomerangState(m_drawModeController.ToggleDrawState());
         } 
+
+        if (m_drawModeController.IsDrawing() && Input.GetButtonDown("Submit"))
+        {
+            var path = m_drawModeController.GetPath();
+
+            if (path.Count > 1)
+            {
+                m_boomerangReference.Init(m_drawModeController.GetPath().ToArray(), () => m_canThrow = true);
+                m_drawModeController.ToggleDrawState();
+
+                m_animator.ForcePlay(PlayerAnimator.Animations.Throw);
+
+                m_canMove = true;
+                m_canThrow = false;
+            }
+        }
 
         if (m_canMove)
         {
             m_movement.DoMovement(m_input);
-        }
 
-        m_animator.DoAnimation(m_input);
+            m_animator.DoMoveRelatedAnimation(m_input);
+        }
 
         // removes the bug that occurs on some computers with the insta-fall state.
         // delays the check until everything is set up and ready to go.
@@ -76,5 +95,12 @@ public class PlayerController : MonoBehaviour
         vec.y = Input.GetAxisRaw("Vertical");
 
         return vec.normalized;
+    }
+
+    public void ToggleBoomerangState(bool to_enter)
+    {
+        m_canMove = !to_enter;
+
+        m_animator.ForcePlay(to_enter ? PlayerAnimator.Animations.PoseThrow : PlayerAnimator.Animations.Idle);
     }
 }

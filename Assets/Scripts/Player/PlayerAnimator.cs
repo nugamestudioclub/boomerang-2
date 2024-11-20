@@ -23,7 +23,7 @@ public class PlayerAnimator : MonoBehaviour
         m_stateHash = Animator.StringToHash("State");
     }
 
-    public void DoAnimation(Vector2 input_vector)
+    public void DoMoveRelatedAnimation(Vector2 input_vector)
     {
         if (m_previousInput == input_vector) return;
         m_previousInput = input_vector;
@@ -33,12 +33,6 @@ public class PlayerAnimator : MonoBehaviour
 
     public void ForcePlay(Animations anim)
     {
-        if (anim == Animations.Idle || anim == Animations.Move)
-        {
-            Debug.LogError("Do not force idle or move.");
-            return;
-        }
-
         m_animator.SetInteger(m_stateHash, (int)anim);
     }
 
