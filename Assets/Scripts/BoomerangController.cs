@@ -39,6 +39,7 @@ public class BoomerangController : MonoBehaviour
     {
         if (state)
         {
+            m_isFlyingBack = false;
             m_twirlSystem.Play();
             m_twirlSource.Play();
 
