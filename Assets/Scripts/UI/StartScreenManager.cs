@@ -37,7 +37,7 @@ public class StartScreenManager : MonoBehaviour {
    
 
     private void OnStart(ClickEvent clickEvent){
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Scadoomerang");
     }
 
     private void OnSettings(ClickEvent clickEvent){
