@@ -82,7 +82,7 @@ public class DrawModeBehavior : MonoBehaviour
 
         camera_transform.SetPositionAndRotation(to_transform.position, to_transform.rotation);
 
-        Camera.main.orthographic = m_isInDrawMode;
+        // Camera.main.orthographic = m_isInDrawMode;
     }
 
     private void Update()

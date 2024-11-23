@@ -17,5 +17,10 @@ public abstract class AMonoAnimatorToggle : MonoBehaviour, IStateChangeable
         OnState(state);
     }
 
+    public void SetActiveStateNot(bool state)
+    {
+        SetActiveState(!state);
+    }
+
     protected virtual void OnState(bool state) { }
 }

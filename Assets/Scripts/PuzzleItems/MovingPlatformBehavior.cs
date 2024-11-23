@@ -24,6 +24,8 @@ public class MovingPlatformBehavior : MonoBehaviour, IStateChangeable
         }
     }
 
+    public void SetActiveStateNot(bool state) => SetActiveState(!state);
+
     private IEnumerator IEDoBehavior()
     {
         var start = m_startPosition;

@@ -8,6 +8,8 @@ public class BoomerangController : MonoBehaviour
 {
     [SerializeField] private float m_boomerangMoveSpeed;
     [SerializeField] private Transform m_player;
+    [SerializeField] private MeshRenderer m_mesh;
+    [SerializeField] private Collider m_collider;
 
     [Space(10)]
 
@@ -24,9 +26,24 @@ public class BoomerangController : MonoBehaviour
         m_rigidbody = GetComponent<Rigidbody>();
     }
 
+    private void SetState(bool state)
+    {
+        if (state)
+        {
+            m_twirlSystem.Play();
+        }
+        else
+        {
+            m_twirlSystem.Stop();
+        }
+
+        m_mesh.enabled = state;
+        m_collider.enabled = state;
+    }
+
     public void Init(Vector3[] points, Action on_complete)
     {
-        gameObject.SetActive(true);
+        SetState(true);
 
         transform.position = points[0];
 
@@ -92,6 +109,6 @@ public class BoomerangController : MonoBehaviour
         m_catchSystem.Play();
 
         OnComplete?.Invoke();
-        gameObject.SetActive(false);
+        SetState(false);
     }
 }

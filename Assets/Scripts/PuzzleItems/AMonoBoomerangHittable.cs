@@ -4,7 +4,8 @@ public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
 {
     [SerializeField] private string m_boomerangTag = "Boomerang";
     [SerializeField] private bool m_endsPathOnHit = false;
-    [SerializeField] private bool m_endsPathOnMiss = false;
+    [SerializeField] private bool m_endsPathOnFail = false;
+    [SerializeField] private ParticleSystem m_hitSystem;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,12 +18,14 @@ public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
         {
             // get boomerang component with a trygetcomponent and put it into the preprocess
 
+            Instantiate(m_hitSystem, transform);
+
             DoHitBehavior();
 
             return m_endsPathOnHit;
         }
 
-        return m_endsPathOnMiss;
+        return m_endsPathOnFail;
     }
 
     protected virtual void DoHitBehavior()
