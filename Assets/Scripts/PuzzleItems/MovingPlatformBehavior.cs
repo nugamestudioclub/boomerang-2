@@ -5,11 +5,20 @@ public class MovingPlatformBehavior : MonoBehaviour, IStateChangeable
 {
     [SerializeField] private Vector3 m_startPosition;
     [SerializeField] private Vector3 m_endPosition;
+    private Vector3 m_pos;
+    private Vector3 m_dest;
+
     [SerializeField] private float m_scalar = 4f;
     private float m_progress;
     private bool m_isLeftToRight = true;
 
     private Coroutine m_routine;
+
+    void Awake()
+    {
+        m_pos = m_startPosition;
+        m_dest = m_endPosition;
+    }
 
     public void SetActiveState(bool state)
     {
@@ -28,9 +37,6 @@ public class MovingPlatformBehavior : MonoBehaviour, IStateChangeable
 
     private IEnumerator IEDoBehavior()
     {
-        var start = m_startPosition;
-        var end = m_endPosition;
-
         while (true)
         {
             while (m_progress < 0.975f)
@@ -38,7 +44,7 @@ public class MovingPlatformBehavior : MonoBehaviour, IStateChangeable
                 m_progress += Time.deltaTime * m_scalar;
                 m_progress = Mathf.Clamp(m_progress, 0f, 1f);
 
-                transform.position = Vector3.Lerp(start, end, m_progress);
+                transform.position = Vector3.Lerp(m_pos, m_dest, m_progress);
 
                 yield return null;
             }
@@ -48,13 +54,13 @@ public class MovingPlatformBehavior : MonoBehaviour, IStateChangeable
 
             if (m_isLeftToRight)
             {
-                start = m_startPosition;
-                end = m_endPosition;
+                m_pos = m_startPosition;
+                m_dest = m_endPosition;
             }
             else
             {
-                start = m_endPosition;
-                end = m_startPosition;
+                m_pos = m_endPosition;
+                m_dest = m_startPosition;
             }
         }
     }

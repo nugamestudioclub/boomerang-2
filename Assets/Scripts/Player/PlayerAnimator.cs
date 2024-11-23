@@ -15,7 +15,6 @@ public class PlayerAnimator : MonoBehaviour
 
     [SerializeField] private Animator m_animator;
 
-    private Vector2 m_previousInput;
     private int m_stateHash;
 
     private void Awake()
@@ -25,8 +24,10 @@ public class PlayerAnimator : MonoBehaviour
 
     public void DoMoveRelatedAnimation(Vector2 input_vector)
     {
-        if (m_previousInput == input_vector) return;
-        m_previousInput = input_vector;
+        int state = input_vector == Vector2.zero ? (int)Animations.Idle : (int)Animations.Move;
+        bool needs_update = m_animator.GetInteger(m_stateHash) != state;
+
+        if (!needs_update) return;
 
         m_animator.SetInteger(m_stateHash, input_vector == Vector2.zero ? (int)Animations.Idle : (int)Animations.Move);
     }

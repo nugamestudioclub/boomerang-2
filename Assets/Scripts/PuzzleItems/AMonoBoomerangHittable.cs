@@ -7,6 +7,12 @@ public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
     [SerializeField] private bool m_endsPathOnFail = false;
     [SerializeField] private ParticleSystem m_hitSystem;
 
+    [Space(10)]
+
+    [SerializeField] private AudioSource m_impactSource;
+    [SerializeField] private AudioClip[] m_impactClips;
+    [SerializeField] private AudioClip[] m_failClips;
+
     private void OnTriggerEnter(Collider other)
     {
         OnHit(other.gameObject);
@@ -20,10 +26,18 @@ public abstract class AMonoBoomerangHittable : MonoBehaviour, IHittable
 
             Instantiate(m_hitSystem, transform);
 
+            m_impactSource.clip = m_impactClips[Random.Range(0, m_impactClips.Length)];
+            m_impactSource.pitch = Random.Range(0.5f, 1.5f);
+            m_impactSource.Play();
+
             DoHitBehavior();
 
             return m_endsPathOnHit;
         }
+
+        m_impactSource.clip = m_failClips[Random.Range(0, m_failClips.Length)];
+        m_impactSource.pitch = Random.Range(0.5f, 1.5f);
+        m_impactSource.Play();
 
         return m_endsPathOnFail;
     }

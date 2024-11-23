@@ -14,12 +14,21 @@ public class BoomerangController : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private ParticleSystem m_twirlSystem;
-    [SerializeField] private ParticleSystem m_holdSystem;
     [SerializeField] private ParticleSystem m_catchSystem;
+
+    [Space(10)]
+
+    [SerializeField] private AudioSource m_twirlSource;
+    [SerializeField] private AudioSource m_throwCatchSmackSource;
+    [SerializeField] private AudioClip m_throwClip;
+    [SerializeField] private AudioClip m_catchClip;
+    [SerializeField] private AudioClip m_smackClip;
     private Rigidbody m_rigidbody;
 
     private Vector3[] m_points;
     private Action OnComplete;
+
+    private bool m_isFlyingBack;
 
     private void Awake()
     {
@@ -31,14 +40,45 @@ public class BoomerangController : MonoBehaviour
         if (state)
         {
             m_twirlSystem.Play();
+            m_twirlSource.Play();
+
+            m_throwCatchSmackSource.clip = m_throwClip;
+            m_throwCatchSmackSource.Play();
         }
         else
         {
             m_twirlSystem.Stop();
+            m_twirlSource.Stop();
+
+            m_throwCatchSmackSource.clip = m_catchClip;
+            m_throwCatchSmackSource.Play();
         }
 
         m_mesh.enabled = state;
         m_collider.enabled = state;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 3 && !other.isTrigger)
+        {
+            StopAllCoroutines();
+
+            if (m_isFlyingBack)
+            {
+                m_catchSystem.Play();
+
+                OnComplete?.Invoke();
+                SetState(false);
+
+                return;
+            }
+
+            m_throwCatchSmackSource.clip = m_smackClip;
+            m_throwCatchSmackSource.Play();
+
+            StartCoroutine(IEFlyBack());
+        }
     }
 
     public void Init(Vector3[] points, Action on_complete)
@@ -89,6 +129,8 @@ public class BoomerangController : MonoBehaviour
 
     private IEnumerator IEFlyBack()
     {
+        m_isFlyingBack = true;
+
         float dist = Vector3.Distance(m_rigidbody.position, m_player.position);
 
         // get initial values for movement

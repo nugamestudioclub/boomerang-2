@@ -7,14 +7,21 @@ using UnityEngine.WSA;
 public class DrawModeBehavior : MonoBehaviour
 {
     private List<Vector3> m_points = new(); // gameobject isn't really necessary; we just want the positions
+    private Vector3 LoggedMousePos
+    {
+        get => m_points[^1];
+        set => m_points[^1] = value;
+    }
 
     [SerializeField] private GameObject m_cursorPrefab; // if no other script uses a property, use serialize field instead of "public". Just OoD things.
     [SerializeField] private Transform m_playerPos;
     [SerializeField] private LineRenderer m_renderer;
     [SerializeField] private PlayerController m_playerController;
+    [SerializeField] private AudioSource m_drawSource;
 
     [Space(10)]
 
+    [SerializeField] private AnimationCurve m_colorCurve;
     [SerializeField] private Transform m_cameraBasicTransform;
     [SerializeField] private Transform m_cameraOrthoTransform;
 
@@ -28,7 +35,9 @@ public class DrawModeBehavior : MonoBehaviour
     private Vector2 m_currentInput;
     private Vector2 m_previousInput; // changed "input" type to Vector2 and renamed
     private bool m_isInDrawMode = false; // booleans should usually be named as questions
-    private float m_currentDrawDistance;
+    private float m_currentDistanceDrawn;
+
+    private float m_tentativePositionDistance;
 
 
     void Start()
@@ -42,12 +51,15 @@ public class DrawModeBehavior : MonoBehaviour
     {
         m_isInDrawMode = !m_isInDrawMode;
 
+        m_renderer.enabled = m_isInDrawMode;
+
         m_cursorInstanceTransform.gameObject.SetActive(m_isInDrawMode);
         m_cursorInstanceTransform.position = m_playerPos.position;
 
         m_points.Clear();
-        m_currentDrawDistance = 0f;
+        m_currentDistanceDrawn = m_tentativePositionDistance = 0f;
         m_points.Add(m_playerPos.position);
+        m_points.Add(m_cursorInstanceTransform.position);
 
         UpdateRenderer(true);
 
@@ -57,13 +69,17 @@ public class DrawModeBehavior : MonoBehaviour
         // generally, you should cache the result of calls to Camera.main since it can be expensive in larger scenes.
         // this is a game jam, so i dont really care :sunglasses:
         StopAllCoroutines(); // we only have 1 coroutine on this gameobject, so this method is fine
-        StartCoroutine(IESlerpCamera(Camera.main.transform, m_isInDrawMode ? m_cameraOrthoTransform : m_cameraBasicTransform));
+        StartCoroutine(IETransition(Camera.main.transform, m_isInDrawMode ? m_cameraOrthoTransform : m_cameraBasicTransform));
 
         return m_isInDrawMode;
     }
 
-    private IEnumerator IESlerpCamera(Transform camera_transform, Transform to_transform)
+    private IEnumerator IETransition(Transform camera_transform, Transform to_transform)
     {
+        int parity = m_isInDrawMode ? 1 : -1;
+
+        if (m_isInDrawMode) m_drawSource.Play();
+
         // you could use a vector3 or a quat here, but since we're lerping two datatypes at the same time,
         // a float representing percent-completed is cleaner.
         float progress = 0f;
@@ -81,6 +97,8 @@ public class DrawModeBehavior : MonoBehaviour
         }
 
         camera_transform.SetPositionAndRotation(to_transform.position, to_transform.rotation);
+
+        if (!m_isInDrawMode) m_drawSource.Stop();
 
         // Camera.main.orthographic = m_isInDrawMode;
     }
@@ -104,15 +122,33 @@ public class DrawModeBehavior : MonoBehaviour
         // if we're heading in a new direction, lay down a point.
         if (is_different_vector && CanDrawMore())
         {
-            m_currentDrawDistance += PlacePoint();
-            UpdateRenderer();
+            m_currentDistanceDrawn += PlacePoint();
         }
 
         var target_position = 
             m_cursorInstanceTransform.position + 
             m_moveDelta * Time.deltaTime * new Vector3(m_currentInput.x, 0f, m_currentInput.y);
 
+
+        // bc im too lazy to rework the code to have a different handling for this :sunglasses:
+        m_drawSource.volume = Mathf.Abs(Input.GetAxis("Horizontal")) + Mathf.Abs(Input.GetAxis("Vertical"));
+
+
         m_cursorInstanceTransform.position = Vector3.MoveTowards(m_cursorInstanceTransform.position, target_position, m_moveDelta * Time.deltaTime);
+
+        // set the distance from the most recently placed point to our cursor
+        // we haven't updated the cursor in our list yet, so dont use m_points[^1];
+        m_tentativePositionDistance = Vector3.Distance(m_cursorInstanceTransform.position, m_points[^2]);
+
+        // if we can still draw things, continue updating the position of the cursor in the points array
+        if (CanDrawMore())
+        {
+            // update our cursor's position in the list
+            LoggedMousePos = m_cursorInstanceTransform.position;
+
+            // update the renderer so that it properly displays the color and cursor pos
+            UpdateRenderer();
+        }
 
         m_previousInput = m_currentInput;
     }
@@ -122,18 +158,19 @@ public class DrawModeBehavior : MonoBehaviour
     {
         var current_pos = m_cursorInstanceTransform.position;
 
-        // funky list operator that gets the last element of the list (i.e. the most recent).
+        // funky list operator that gets the 2nd to last element of the list (i.e. the most recent BESIDES the cursor).
         //
-        // our points list always has at least one element in it (the player's start position),
+        // our points list always has at least two elements in it (the player's start position and cursor pos),
         // so we can safely access it without checking.
-        float distance = Vector3.Distance(m_points[^1], current_pos);
+        float distance = Vector3.Distance(m_points[^2], current_pos); // if we used LoggedMousePos/m_points[^1] (the cursor's pos), we'll be behind by 1 update tick.
 
         // if we end up overdrawing, clamp us to the furthest possible distance
-        if (m_currentDrawDistance + distance > m_maxDrawDistance)
+        if (m_currentDistanceDrawn + distance > m_maxDrawDistance)
         {
-            float distance_remaining = m_maxDrawDistance - m_currentDrawDistance;
+            float distance_remaining = m_maxDrawDistance - m_currentDistanceDrawn;
 
-            current_pos = m_points[^1] + new Vector3(m_previousInput.x, 0f, m_previousInput.y) * distance_remaining;
+            // calculate the maximum position using the last point we added, not the mouse's slightly-delayed "current" position.
+            current_pos = m_points[^2] + new Vector3(m_previousInput.x, 0f, m_previousInput.y) * distance_remaining;
         }
 
         m_points.Add(current_pos);
@@ -143,7 +180,9 @@ public class DrawModeBehavior : MonoBehaviour
 
     private void UpdateRenderer(bool update_all = false)
     {
-        m_renderer.endColor = Color.Lerp(Color.green, Color.red, m_currentDrawDistance / m_maxDrawDistance);
+        float progress = m_colorCurve.Evaluate((m_currentDistanceDrawn + m_tentativePositionDistance) / m_maxDrawDistance);
+        var color = Color.Lerp(Color.green, Color.red, progress);
+        m_renderer.startColor = m_renderer.endColor = color;
 
         if (update_all)
         {
@@ -153,13 +192,21 @@ public class DrawModeBehavior : MonoBehaviour
             return;
         }
 
-        if (m_renderer.positionCount == m_points.Count) return;
+        // if (m_renderer.positionCount == m_points.Count) return;
 
         m_renderer.positionCount = m_points.Count;
-        m_renderer.SetPosition(m_renderer.positionCount - 1, m_points[^1]);
+        m_renderer.SetPosition(m_renderer.positionCount - 1, LoggedMousePos);
     }
 
-    private bool CanDrawMore() => m_currentDrawDistance < m_maxDrawDistance - 0.05f;
+    private void ToggleDrawSource()
+    {
+        if (m_isInDrawMode)
+        {
+            
+        }
+    }
+
+    private bool CanDrawMore() => m_currentDistanceDrawn + m_tentativePositionDistance < m_maxDrawDistance - 0.05f;
 
     public bool IsDrawing() => m_isInDrawMode;
     public List<Vector3> GetPath() => m_points;

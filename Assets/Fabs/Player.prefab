@@ -143,10 +143,17 @@ MonoBehaviour:
   m_playerPos: {fileID: 967092314111756930}
   m_renderer: {fileID: 3018791851655204465}
   m_playerController: {fileID: 437549635762374409}
+  m_drawSource: {fileID: 0}
+  m_colorCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_cameraBasicTransform: {fileID: 0}
   m_cameraOrthoTransform: {fileID: 0}
   m_cameraSlerpSpeed: 4
-  m_moveDelta: 20
+  m_moveDelta: 30
   m_maxDrawDistance: 40
 --- !u!120 &3018791851655204465
 LineRenderer:
