@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4194966978937488502}
   - component: {fileID: 6517625950734213976}
   m_Layer: 0
-  m_Name: Boomerang
+  m_Name: boomerang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d14ebeb00c4eb48b08726adc379218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_boomerangMoveSpeed: 65
+  m_boomerangMoveSpeed: 40
   m_player: {fileID: 0}
   m_twirlSystem: {fileID: 0}
   m_holdSystem: {fileID: 0}
