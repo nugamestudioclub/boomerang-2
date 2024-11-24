@@ -3249,6 +3249,10 @@ PrefabInstance:
       value: Switch
       objectReference: {fileID: 0}
     - target: {fileID: 5986696245211002660, guid: 1ef21a714b0c74198872ff5535d4d5e9, type: 3}
+      propertyPath: color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5986696245211002660, guid: 1ef21a714b0c74198872ff5535d4d5e9, type: 3}
       propertyPath: OnPowerStateChanged.m_PersistentCalls.m_Calls.Array.size
       value: 6
       objectReference: {fileID: 0}

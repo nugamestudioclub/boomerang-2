@@ -5,8 +5,17 @@ public abstract class AMonoAnimatorToggle : MonoBehaviour, IStateChangeable
     [SerializeField] private Animator m_animator;
     [SerializeField] private string m_stateEnabled;
     [SerializeField] private string m_stateDisabled;
+    [SerializeField] private bool m_setActiveOnStart = false;
 
     protected bool IsActive;
+
+    void Start()
+    {
+        if (m_setActiveOnStart)
+        {
+            SetActiveState(true);
+        }
+    }
 
     public void SetActiveState(bool state)
     {

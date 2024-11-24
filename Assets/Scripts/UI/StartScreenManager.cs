@@ -11,6 +11,8 @@ public class StartScreenManager : MonoBehaviour {
     private Button  settingsButton; 
     private Button creditsButton;
     private Button exitButton;
+
+    [SerializeField] private AudioSource lolsource;
     // Start is called before the first frame update
     void Start(){
         root = GetComponent<UIDocument>();
@@ -37,11 +39,12 @@ public class StartScreenManager : MonoBehaviour {
    
 
     private void OnStart(ClickEvent clickEvent){
-            SceneManager.LoadScene("Scadoomerang");
+            SceneManager.LoadScene("LevelSelect");
     }
 
     private void OnSettings(ClickEvent clickEvent){
-        SceneManager.LoadScene("Settings");
+        // SceneManager.LoadScene("Settings");
+        lolsource.Play();
     }
    
      private void OnCredits(ClickEvent clickEvent){

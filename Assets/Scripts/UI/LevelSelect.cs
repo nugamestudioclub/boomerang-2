@@ -35,7 +35,7 @@ public class LevelSelect : MonoBehaviour
    
 
     private void onLevel1(ClickEvent clickEvent){
-     SceneManager.LoadScene("Scadoomerang");
+     SceneManager.LoadScene("Level1");
     }
 
     private void onLevel2(ClickEvent clickEvent){
@@ -43,7 +43,7 @@ public class LevelSelect : MonoBehaviour
     }
    
      private void onLevel3(ClickEvent clickEvent){
-        SceneManager.LoadScene("Level2");
+        SceneManager.LoadScene("Level3");
     }
 
    

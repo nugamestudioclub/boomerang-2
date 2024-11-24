@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
@@ -78,16 +79,21 @@ public class PlayerController : MonoBehaviour
             m_doCheckForFall = false;
             m_canMove = false;
 
-            var offset = new Vector3(m_input.x * 3.5f, 0f, m_input.y * 3.5f);
+            var offset = new Vector3(m_input.x * 2.5f, 0f, m_input.y * 2.5f);
             m_animator.PlayFall(offset);
 
-            Invoke(nameof(DelayInactive), 1f);
+            Invoke(nameof(DelayInactiveAndReload), 1f);
 
             // reload scene.
         }
     }
 
-    private void DelayInactive() => gameObject.SetActive(false);
+    private void DelayInactiveAndReload()
+    {
+        gameObject.SetActive(false);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     private Vector2 GetMoveInput()
     {

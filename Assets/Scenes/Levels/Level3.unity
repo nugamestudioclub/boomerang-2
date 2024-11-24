@@ -1018,7 +1018,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7327110554948800233, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_sceneName
-      value: Scadoomerang
+      value: MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7327110554948800233, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
+      propertyPath: m_setActiveOnStart
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalScale.x
@@ -1038,7 +1042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1046,7 +1050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1058,7 +1062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 8930312557810734323, guid: 017c95a33a98a914092132e10ac9b6c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

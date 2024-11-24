@@ -12,8 +12,8 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         // Ensure the pause menu is hidden at the start and time scale is normal
-        pauseMenu.SetActive(false);
-        settingsMenu.SetActive(false);
+        if (pauseMenu) pauseMenu.SetActive(false);
+        if (settingsMenu) settingsMenu.SetActive(false);
         Time.timeScale = 1f;
     }
 
