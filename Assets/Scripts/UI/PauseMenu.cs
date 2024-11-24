@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject settingsMenu;
-    private bool isPaused = false; // Tracks if the game is paused
+    public static bool isPaused = false; // Tracks if the game is paused
 
     void Start()
     {

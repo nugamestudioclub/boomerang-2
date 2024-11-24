@@ -10,6 +10,7 @@ public class BoomerangController : MonoBehaviour
     [SerializeField] private Transform m_player;
     [SerializeField] private MeshRenderer m_mesh;
     [SerializeField] private Collider m_collider;
+    [SerializeField] private TrailRenderer m_trailRenderer;
 
     [Space(10)]
 
@@ -84,9 +85,11 @@ public class BoomerangController : MonoBehaviour
 
     public void Init(Vector3[] points, Action on_complete)
     {
-        SetState(true);
-
+        m_trailRenderer.emitting = false;
         transform.position = points[0];
+        m_trailRenderer.emitting = true;
+
+        SetState(true);
 
         m_points = points;
 

@@ -154,7 +154,7 @@ MonoBehaviour:
   m_cameraOrthoTransform: {fileID: 0}
   m_cameraSlerpSpeed: 4
   m_moveDelta: 30
-  m_maxDrawDistance: 40
+  m_maxDrawDistance: 30
 --- !u!120 &3018791851655204465
 LineRenderer:
   serializedVersion: 2

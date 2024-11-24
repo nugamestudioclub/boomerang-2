@@ -121,6 +121,7 @@ MonoBehaviour:
   m_player: {fileID: 4247981509213149711}
   m_mesh: {fileID: 202803428884034897}
   m_collider: {fileID: 4318981193880731646}
+  m_trailRenderer: {fileID: 5334322374534508106}
   m_twirlSystem: {fileID: 3725735222043427906}
   m_catchSystem: {fileID: 3190211041965267186}
   m_twirlSource: {fileID: 4333262889622589459}
@@ -278,7 +279,7 @@ TrailRenderer:
       m_NumColorKeys: 5
       m_NumAlphaKeys: 4
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 2
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
@@ -308,7 +309,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 0.1, z: 5}
+  m_Size: {x: 4.32, y: 0.1, z: 2.85}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &4333262889622589459
 AudioSource:
@@ -569,7 +570,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: fb1d36b260e0f2c4ba80f0640f6ddf85, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e6f289b5e8741e245b907bfa202f03c9, type: 2}
+      objectReference: {fileID: 2100000, guid: 2b9e5a089fe05ef4fb95482e4b1a99ff, type: 2}
     - target: {fileID: -5754084199372789682, guid: fb1d36b260e0f2c4ba80f0640f6ddf85, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -660,7 +661,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: fb1d36b260e0f2c4ba80f0640f6ddf85, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e6f289b5e8741e245b907bfa202f03c9, type: 2}
+      objectReference: {fileID: 2100000, guid: 2b9e5a089fe05ef4fb95482e4b1a99ff, type: 2}
     - target: {fileID: -5754084199372789682, guid: fb1d36b260e0f2c4ba80f0640f6ddf85, type: 3}
       propertyPath: m_Mesh
       value: 

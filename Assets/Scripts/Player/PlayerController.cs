@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.isPaused) return;
+
         m_input = GetMoveInput();
 
         if (m_canThrow && Input.GetButtonDown("Jump"))
